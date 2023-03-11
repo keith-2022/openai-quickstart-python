@@ -4,16 +4,16 @@ import openai
 from flask import Flask, redirect, render_template, request, url_for
 
 app = Flask(__name__)
-openai.api_key = os.getenv("OPENAI_API_KEY")
-
+## openai.api_key = os.getenv("OPENAI_API_KEY")
+openai.api_key = "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"
 
 @app.route("/", methods=("GET", "POST"))
 def index():
     if request.method == "POST":
-        animal = request.form["animal"]
+        question = request.form["question"]
         response = openai.Completion.create(
             model="text-davinci-003",
-            prompt=generate_prompt(animal),
+            prompt=generate_prompt(question),
             temperature=0.6,
         )
         return redirect(url_for("index", result=response.choices[0].text))
@@ -23,13 +23,6 @@ def index():
 
 
 def generate_prompt(animal):
-    return """Suggest three names for an animal that is a superhero.
-
-Animal: Cat
-Names: Captain Sharpclaw, Agent Fluffball, The Incredible Feline
-Animal: Dog
-Names: Ruff the Protector, Wonder Canine, Sir Barks-a-Lot
-Animal: {}
-Names:""".format(
+    return """{}""".format(
         animal.capitalize()
     )
